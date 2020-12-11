@@ -17,3 +17,59 @@ var img_gen = ()=> {
 };
 $("#gen_btn").click(img_gen);
 
+let rpsGame = (yourchoice) => {
+    let humanChoice= yourchoice.id;
+    let botChoice = ['rock', 'paper', 'scissors'][Math.floor(Math.random()*3)];
+    result = decideWinner(humanChoice,botChoice);
+    rpsFrontend(humanChoice,botChoice,finalMessage(result))
+}
+
+let decideWinner = (hc,bc) => {
+    let rpsDatabase = {
+        'rock': {'scissors':1, 'rock': 0.5, 'paper':0},
+        'paper': {'rock':1, 'paper': 0.5, 'scissors':0},
+        'scissors': {'paper':1, 'scissors': 0.5, 'rock':0},
+    }
+    let yourScore = rpsDatabase[hc][bc];
+    let computerScore = rpsDatabase[bc][hc];
+    return[yourScore,computerScore];
+}
+
+let finalMessage = ([yourScore,computerScore]) =>{
+    if(yourScore === computerScore){
+        return {'message': 'You Tied', 'color': 'yellow'};
+    }
+    else if(yourScore < computerScore) {        
+        return {'message': 'You Lose', 'color': 'red'};
+    }
+    else{
+        return {'message': 'You Win', 'color': 'green'};
+    }
+}
+
+let rpsFrontend = (humanImageChoice,botImageChoice,finalMessage) => {
+    let imageDatabase = {
+        'rock': document.getElementById("rock").src,
+        'paper': document.getElementById("paper").src,
+        'scissors': document.getElementById("scissors").src,
+    }
+    $("#rock").hide();
+    $("#paper").hide();
+    $("#scissors").hide();
+    let humanDiv = document.createElement('div');
+    let messageDiv = document.createElement('div');
+    let botDiv = document.createElement('div');
+    
+    humanDiv.innerHTML = "<img src='"+imageDatabase[humanImageChoice]+"'style='box-shadow: 0px 10px 50px rgba(0, 89, 255, 1)'>";
+    messageDiv.innerHTML = "<h1 style='color: " + finalMessage['color']+"; font-size:60px; padding: 30px; '>"+finalMessage['message']+"</h1>"
+    botDiv.innerHTML = "<img src='"+imageDatabase[botImageChoice]+"'style='box-shadow: 0px 10px 50px rgba(255, 0, 34, 0.918)'>";
+    $(".flex-box-rps").append(humanDiv);
+    $(".flex-box-rps").append(messageDiv);
+    $(".flex-box-rps").append(botDiv);
+}
+$(".btn-info").click(()=>{
+    $(".flex-box-rps div").hide();
+    $("#rock").show();
+    $("#paper").show();
+    $("#scissors").show();
+})
