@@ -36,7 +36,25 @@
         <div class="flex-box-rps">
             <img id="rock" src="https://openclipart.org/image/800px/209758" onClick="rpsGame(this)" alt="">
             <img id="paper" src="https://freesvg.org/img/paper.png" onClick="rpsGame(this)" alt="">
-            <img id="scissors" src="https://www.pngkey.com/png/full/22-223127_scissor-big.png" onClick="rpsGame(this)" alt="">
+            <img id="scissors" src="https://www.pngkey.com/png/full/22-223127_scissor-big.png" onClick="rpsGame(this)"
+                alt="">
+        </div>
+    </div>
+    <div class="container-4">
+        <h2>Challenge 4: Change the color of all buttons!</h2>
+        <div class="flex-box-pick-color">
+            <form action="">
+                <select name="backdrop" id="background" onchange="buttonColorChange(this)">
+                    <option value="random">Random</option>
+                    <option value="red">Red</option>
+                    <option value="green">green</option>
+                    <option value="reset">Reset</option>
+                </select>
+            </form>
+            <button class="btn btn-primary">Wee!!!</button>
+            <button class="btn btn-danger">Yahoo!!!</button>
+            <button class="btn btn-warning">Google!!!</button>
+            <button class="btn btn-success">Facebook!!!</button>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
