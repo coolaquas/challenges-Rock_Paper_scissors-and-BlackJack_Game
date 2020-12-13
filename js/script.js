@@ -109,17 +109,68 @@ function buttonGreen() {
     });
 }
 function buttonReset() {
-    for(let i=0;i<all_buttons.length;i++){
+    for (let i = 0; i < all_buttons.length; i++) {
         all_buttons[i].classList.remove(all_buttons[i].classList[1]);
         all_buttons[i].classList.add(copyAllButton[i]);
     }
 }
 
-function randomColors(){
+function randomColors() {
     let choices = [...copyAllButton]
     randomChoice = choices.sort(() => .5 - Math.random());
-    for(let i=0;i<all_buttons.length;i++){
+    for (let i = 0; i < all_buttons.length; i++) {
         all_buttons[i].classList.remove(all_buttons[i].classList[1]);
         all_buttons[i].classList.add(randomChoice[i]);
     }
 }
+
+let blackjackGame = {
+    'you': { 'scorespan': '#your-blackjack-result', 'div': '#your-box', 'score': 0 },
+    'dealer': { 'scorespan': '#dealer-blackjack-result', 'div': '#dealer-box', 'score': 0 },
+    'cards': ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
+    'cardsMap': { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10, 'A': [1, 11] },
+}
+const YOU = blackjackGame['you'];
+const DEALER = blackjackGame['dealer'];
+let randCard = () => {
+    return blackjackGame.cards[(Math.floor(Math.random() * 13))]
+}
+let showCard = (activePlayer, card) => {
+    let cardImage = document.createElement("img");
+    cardImage.src = `/public/images/${card}.png`;
+    const hitSound = new Audio("../public/sounds/swish.m4a");
+    hitSound.play();
+    $(activePlayer.div).append(cardImage);
+}
+let updateScore = (activePlayer, card) => {
+    if (card == 'A') {
+        if (activePlayer.score < 11) {
+            activePlayer.score += blackjackGame.cardsMap[card][1];
+        } else {
+            activePlayer.score += blackjackGame.cardsMap[card][0];
+        }
+    } else {
+        activePlayer.score += blackjackGame.cardsMap[card];
+    }
+
+    $(activePlayer.scorespan).text(activePlayer.score);
+}
+$("#blackjack-hit-button").click(() => {
+    let randomCard = randCard();
+    showCard(DEALER, randomCard);
+    updateScore(DEALER, randomCard);
+    console.log(DEALER.score);
+
+})
+$("#blackjack-stand-button").click(() => {
+
+})
+$("#blackjack-deal-button").click(() => {
+    $(".flex-blackjack-row-1 img").remove();
+    $("#blackjack-result").text("Let's Play");
+    $("#your-blackjack-result").text(0);
+    $("#dealer-blackjack-result").text(0);
+    YOU.score = 0;
+    DEALER.score = 0;
+    console.log(DEALER.score);
+})
